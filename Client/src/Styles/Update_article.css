@@ -1,0 +1,112 @@
+*{
+    box-sizing: border-box;
+}
+.Edit_article_cap form.article-write-form #input-error{
+    width: fit-content;
+    width: -moz-fit-content;
+    height: fit-content;
+    height: -moz-fit-content;
+    margin: 10px auto;
+    color: rgba(243,32,19,1);
+}
+.Edit_article_cap form.article-write-form .write-options{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 40px;
+    align-items: center;
+}
+.Edit_article_cap form.article-write-form .write-options > span{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.Edit_article_cap form.article-write-form .write-options span span#add-subtitle{
+    /* display: inline-block; */
+    padding: 5px 10px;
+    border: 1px solid #000000;
+    border-radius: 9999px;
+    cursor: pointer;
+}
+.Edit_article_cap form.article-write-form .write-options span #cover-upload-btn{
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #000000;
+    border-radius: 9999px;
+    cursor: pointer;
+}
+.Edit_article_cap form.article-write-form .write-options span .submit-article{
+    padding: 5px 10px;
+    border: 1px solid #000000;
+    border-radius: 9999px;
+    transition: all ease .35s;
+}
+.Edit_article_cap form.article-write-form .write-options span .submit-article:hover{
+    background-color: rgba(226, 232, 240,1);
+}
+/* START << Theme Category Select >> START */
+.Edit_article_cap form.article-write-form .write-options span .box select{
+        /* background-color: #0563af; */
+        /* color: white; */
+        padding: 5px 10px;
+        border: 1px solid #000000;
+        cursor: pointer;
+        border-radius: 9999px;
+        /* box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2); */
+        -webkit-appearance: button;
+        appearance: button;
+        outline: none;
+}
+
+/* END << Theme Category Select >> END */
+
+.Edit_article_cap form.article-write-form .article-components div.Article-subtitle{
+    box-sizing: border-box;
+    width: 96%;
+}
+.Edit_article_cap form.article-write-form .article-components div textarea{
+    width: 100%;
+    padding-left: 1rem;
+    background-color: transparent;
+    outline: transparent solid 2px;
+    resize: none;
+    border: 0 solid rgba(226, 232, 240, .8);
+}
+.Edit_article_cap form.article-write-form .article-components div textarea.title-txtarea{
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    font-weight: 800;
+    padding-right: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+    appearance: none;
+    outline-offset: 2px;
+}
+.Edit_article_cap form.article-write-form .article-components div textarea.subtitle-txtarea{
+    font-size: 1.5rem;
+    line-height: 1.375;
+    font-weight: 500;
+    padding-right: 2.5rem;
+    appearance: none;
+    outline-offset: 2px;
+}
+.Edit_article_cap form.article-write-form .article-components div textarea.content-txtarea{
+    font-size: 1.25rem;
+    line-height: 1.375;
+    min-height: 100vh;
+    padding: 3rem 1rem;
+    overflow: hidden;
+    margin: 0;
+}
+/* MEDIA QUERIES */
+@media screen and (max-width: 422px){
+    .Edit_article_cap form.article-write-form .write-options{
+        display: grid;
+        align-items: center;
+        justify-content: center;
+    }
+    .Edit_article_cap form.article-write-form .write-options > span:first-child{
+        order: 2;
+    }
+}
