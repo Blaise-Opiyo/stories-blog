@@ -9,6 +9,14 @@
     margin: 10px auto;
     color: rgba(243,32,19,1);
 }
+.Edit_article_cap form.article-write-form #successful-update-msg{
+    width: fit-content;
+    width: -moz-fit-content;
+    height: fit-content;
+    height: -moz-fit-content;
+    margin: 10px auto;
+    color: rgba(75,181,67, 1);
+}
 .Edit_article_cap form.article-write-form .write-options{
     display: flex;
     justify-content: space-between;

@@ -6,7 +6,7 @@ const path = require('node:path');
 //Use of Multer
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, '../Client/src/Assets')    //directory name where save the file
+        cb(null, '../Client/public/Uploads')    //directory name where save the file
     },
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
@@ -21,7 +21,7 @@ const createdAt = () =>{
     return moment().format("dddd, MMMM Do, YYYY");               // Oct 19th 2022
 }
 const assign_cover = (file_name) =>{
-    const filename = (file_name) ? file_name.filename : "story_cover.png";
+    const filename = (file_name) ? file_name.filename : "story_cover.jpg";
     return filename;
 }
 const controllers = (app) =>{
@@ -35,6 +35,7 @@ const controllers = (app) =>{
             storyContent: req.body.storyContent,
             // storyCover: "story_cover.png",
             storyCover: assign_cover(req.file),
+            story_selection: req.body.story_selection,
             created_at: createdAt()
         }
         console.log(story_data.storyTitle);
@@ -56,9 +57,9 @@ const controllers = (app) =>{
                 }else{
                     // If no title exists then insert the new article in db
                     console.log(`No other title matches it`);
-                    const insertSQL = "INSERT INTO blogs(title, slug, headline, content, cover, created_at) VALUES (?)";
+                    const insertSQL = "INSERT INTO blogs(title, slug, headline, content, cover, story_selection, created_at) VALUES (?)";
                     const insertValues = [story_data.storyTitle, story_data.slug, story_data.storySubtitle, story_data.storyContent, 
-                        story_data.storyCover, story_data.created_at];
+                        story_data.storyCover, story_data.story_selection, story_data.created_at];
                     conn.query(insertSQL, [insertValues], (err, result) =>{
                         if (err) throw err;
                         else{
@@ -126,15 +127,16 @@ const controllers = (app) =>{
             storyTitle: req.body.storyTitle,
             storySubtitle: req.body.storySubtitle,
             storyContent: req.body.storyContent,
-            storySlug: req.body.story_slug
+            storySlug: req.body.story_slug,
+            story_selection: req.body.story_selection
             // created_at: createdAt() ---You can also implement the last updated timestamp
         }
         //DB Queries work
-        const updateSQL = `UPDATE blogs SET title = ${story_update_data.storyTitle},
-                                            headline = ${story_update_data.storySubtitle},
-                                            content = ${story_update_data.storyContent} 
-                                            WHERE slug = ${story_update_data.storySlug}`;
-        conn.query(updateSQL, (err, result) =>{
+        const updateSQL = "UPDATE blogs SET title = ?, headline = ?, content = ?, story_selection = ? WHERE slug = ?";
+        const data = [story_update_data.storyTitle, story_update_data.storySubtitle,
+             story_update_data.storyContent, story_update_data.story_selection, story_update_data.storySlug];
+
+        conn.query(updateSQL, data, (err, result) =>{
             if (err) throw err;
             else{
             console.log("Number of records updated: " + result.affectedRows);

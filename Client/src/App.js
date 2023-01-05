@@ -7,7 +7,6 @@ import Blog_home from './Components/Blog_home';
 import Edit_article from './Components/Edit_article';
 import Article from './Components/Article';
 import Update_article from './Components/Update_article';
-import andrey_zvyagintsev_unsplash from './Assets/andrey-zvyagintsev-x0c6vTO5ibA-unsplash.jpg';
 import './App.css';
 
 const App = () => {
@@ -17,7 +16,7 @@ const App = () => {
       <div className="Mask-container">
         {/* Start of Navigation */}
           <Navbar expand="sm">
-            <Navbar.Brand href="#home"><div className="logo-thumb"><img src={andrey_zvyagintsev_unsplash} alt="logo img thumb"/></div>Navbar with text</Navbar.Brand>
+            <Navbar.Brand href="#home"><div className="logo-thumb"><img src="/Uploads/Beelson-logo-smaller-artboard-v3.png" alt="logo img thumb"/></div></Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
               <Nav>

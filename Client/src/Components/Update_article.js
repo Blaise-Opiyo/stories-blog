@@ -17,10 +17,10 @@ const Update_article = () =>{
     const [storyTitle, setStoryTitle] = useState("");
     const [storySubtitle, setStorySubtitle] = useState("");
     const [storyContent, setStoryContent] = useState("");  
-    const [story_selection, setStory_selection] = useState("Life update");
+    const [story_selection, setStory_selection] = useState("");
     // const [coverFile, setCoverFile] = useState();
     // const [coverFilename, setCoverFilename] = useState();
-    const [publishResponse, setPublishResponse] = useState({});
+    const [successResponse, setSuccessResponse] = useState(false);
     const [empty_input, setEmpty_input] = useState(false);
     const [input_error, setInput_error] = useState("");
     
@@ -50,6 +50,7 @@ const Update_article = () =>{
             setStoryTitle(response.data[0].title);
             setStorySubtitle(response.data[0].headline);
             setEditorContent(response.data[0].content);
+            setStory_selection(response.data[0].story_selection);
         }).catch((error) =>{
             console.log(error);
         })
@@ -60,6 +61,8 @@ const Update_article = () =>{
         e.preventDefault();
         setEmpty_input(false);
         setInput_error("");
+        setSuccessResponse(false);
+
         console.log("Story Title:" + storyTitle);
         console.log("Story Sub title:" + storySubtitle);
         console.log("Story Content" + storyContent);
@@ -94,10 +97,9 @@ const Update_article = () =>{
                 headers: {'Content-Type': 'multipart/form-data' }
                 })
               .then((data) => {
-                console.log("Data Successfully sent to the server");
+                console.log("Article successfully updated on the server");
                 console.log(data);
-                console.log(data.data);
-                setPublishResponse(data);
+                setSuccessResponse(true);
                 // navigate("/");
               })
               .catch(function (error) {
@@ -130,13 +132,16 @@ const Update_article = () =>{
     //     $('#cover-upload-btn').text(`Uploaded Image: ${filename}`);
     // }
     const getSelection = (e) =>{
+        e.preventDefault();
         setStory_selection(e.target.value);
     }
     return(
         <div className="Edit_article_cap">
             <form className="article-write-form" onSubmit={updateStory}>
                 {empty_input === true ? 
-                <p id="input-error">{input_error}</p>: null}
+                <p id="input-error">{input_error}</p> : 
+                (successResponse === true) ? <p id="successful-update-msg">Updated successfully</p> : null }
+
                 <div className="write-options">
                     <span className="options-left">
                         {/* <span>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Axios from "axios";
-import kadyn_pierce_DM3AxUubhg0_unsplash from '../Assets/kadyn-pierce-DM3AxUubhg0-unsplash.jpg';
+import parse from 'html-react-parser';
 import '../Styles/Article.css';
 
 const Article = () =>{
@@ -25,13 +25,16 @@ const Article = () =>{
             <Link id="edit-article-btn" to={`/edit/${article.slug}`}>Edit</Link>
             {/* <div id="edit-article-btn">Edit</div> */}
             <div className="article-cover-cont">
-                <img className="article-cover" src={kadyn_pierce_DM3AxUubhg0_unsplash} alt="Article Cover"/>
+                <img className="article-cover" src={`/Uploads/${article.cover}`} alt={`${article.cover}`}/>
             </div>
             <div className="article-title">
                 <h1 className="title-heading">{article.title}</h1>
                 <div className="title-meta">
                     <small className="date-created">{article.created_at}</small>
                 </div>
+            </div>
+            <div className="article-content">
+                {parse(`${article.content}`)}
             </div>
             
         </div>

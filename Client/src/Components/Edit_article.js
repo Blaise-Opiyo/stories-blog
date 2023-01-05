@@ -109,6 +109,7 @@ const Edit_article = () =>{
         $('#cover-upload-btn').text(`Uploaded Image: ${filename}`);
     }
     const getSelection = (e) =>{
+        e.preventDefault();
         setStory_selection(e.target.value);
     }
     return(
