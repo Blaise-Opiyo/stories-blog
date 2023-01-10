@@ -18,7 +18,8 @@ var upload = multer({
 });
 
 const createdAt = () =>{
-    return moment().format("dddd, MMMM Do, YYYY");               // Oct 19th 2022
+    // return moment().format('ll');               // Jan 8, 2023 // Multiple Locale Support
+    return moment().format('MMMM Do, YYYY'); //January 8th 2023
 }
 const assign_cover = (file_name) =>{
     const filename = (file_name) ? file_name.filename : "story_cover.jpg";
@@ -46,7 +47,7 @@ const controllers = (app) =>{
         console.log("Database Connection Successful");
 
         //SEARCH DB for an existing article title
-        const searchTitle = `SELECT COUNT(*) AS titleCount FROM blogs WHERE title = "${story_data.storyTitle}"`;
+        const searchTitle = `SELECT COUNT(*) AS titleCount FROM stories WHERE title = "${story_data.storyTitle}"`;
         conn.query(searchTitle, (err, result) =>{
             if (err) throw err;
             else{
@@ -57,7 +58,7 @@ const controllers = (app) =>{
                 }else{
                     // If no title exists then insert the new article in db
                     console.log(`No other title matches it`);
-                    const insertSQL = "INSERT INTO blogs(title, slug, headline, content, cover, story_selection, created_at) VALUES (?)";
+                    const insertSQL = "INSERT INTO stories(title, slug, headline, content, cover, story_selection, created_at) VALUES (?)";
                     const insertValues = [story_data.storyTitle, story_data.slug, story_data.storySubtitle, story_data.storyContent, 
                         story_data.storyCover, story_data.story_selection, story_data.created_at];
                     conn.query(insertSQL, [insertValues], (err, result) =>{
@@ -75,7 +76,7 @@ const controllers = (app) =>{
     app.get('/allblogs', (req, res) =>{
 
         //DB Queries work
-        const getBlogs = "SELECT * FROM blogs";
+        const getBlogs = "SELECT * FROM stories";
         conn.query(getBlogs, (err, results) =>{
             if (err) throw err;
             else{
@@ -92,7 +93,7 @@ const controllers = (app) =>{
             console.log(`URL Params available as ${req.params.slug}`);
             let slug = req.params.slug;
             //DB Queries work
-        const getArticle = "SELECT * FROM blogs WHERE slug = ?";
+        const getArticle = "SELECT * FROM stories WHERE slug = ?";
         conn.query(getArticle, [slug], (err, result) =>{
             if (err) throw err;
             else{
@@ -110,7 +111,7 @@ const controllers = (app) =>{
             console.log(`URL Params available as ${req.params.slug}`);
             let slug = req.params.slug;
             //DB Queries work
-        const getArticle = "SELECT * FROM blogs WHERE slug = ?";
+        const getArticle = "SELECT * FROM stories WHERE slug = ?";
         conn.query(getArticle, [slug], (err, result) =>{
             if (err) throw err;
             else{
@@ -132,7 +133,7 @@ const controllers = (app) =>{
             // created_at: createdAt() ---You can also implement the last updated timestamp
         }
         //DB Queries work
-        const updateSQL = "UPDATE blogs SET title = ?, headline = ?, content = ?, story_selection = ? WHERE slug = ?";
+        const updateSQL = "UPDATE stories SET title = ?, headline = ?, content = ?, story_selection = ? WHERE slug = ?";
         const data = [story_update_data.storyTitle, story_update_data.storySubtitle,
              story_update_data.storyContent, story_update_data.story_selection, story_update_data.storySlug];
 

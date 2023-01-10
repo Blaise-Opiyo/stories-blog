@@ -28,12 +28,16 @@ const Edit_article = () =>{
     //Editor Content state variables
     const [editorContent, setEditorContent] = useState('');
 
+    const [output_display, setOutput_display] = useState(false);
+    const [output_text, setOutput_text] = useState("show output");
     //Editor design related variables
     // const editorConfiguration = {
     //     toolbar: [ 'bold', 'italic' ]
     // };
     const subtitleRef = useRef(null);
     const addSubtitleRef = useRef(null);
+    const outputRef = useRef(null);
+    const toggleOutputRef = useRef(null);
 
     const navigate = useNavigate();
 
@@ -60,30 +64,31 @@ const Edit_article = () =>{
         console.log(Object.fromEntries(formData));
         if(storyTitle === ""){
             setEmpty_input(true);
-            setInput_error(`The Article Title is Required`);
+            setInput_error(`The article title is required`);
         }else if(editorContent === ""){
             setEmpty_input(true);
-            setInput_error("The Article Content is Required");
+            setInput_error("The article content is required");
+        }else{
+            Axios({
+                method: 'post',
+                url: 'http://localhost:4000/publish-story',   //addyoururl
+                data: formData,
+                headers: {'Content-Type': 'multipart/form-data' }
+                })
+              .then((res) => {
+                console.log("Data Successfully sent to the server");
+                console.log(res);
+                navigate("/");
+              })
+              .catch(function (error) {
+                if(error.response.status === 400 && error.response.data === "title already exists"){
+                    console.log("Title duplication error");
+                    setDuplicate_title(true);
+                    setPublishError("The title already exists");
+                }
+            });
         }
 
-        Axios({
-            method: 'post',
-            url: 'http://localhost:4000/publish-story',   //addyoururl
-            data: formData,
-            headers: {'Content-Type': 'multipart/form-data' }
-            })
-          .then((res) => {
-            console.log("Data Successfully sent to the server");
-            console.log(res);
-            navigate("/");
-          })
-          .catch(function (error) {
-            if(error.response.status === 400 && error.response.data === "title already exists"){
-                console.log("Title duplication error");
-                setDuplicate_title(true);
-                setPublishError("The title already exists");
-            }
-        });
     }
 
     //Inline and Components Scripts
@@ -107,6 +112,19 @@ const Edit_article = () =>{
         const filename = e.target.files[0].name;
         console.log(coverFilename);
         $('#cover-upload-btn').text(`Uploaded Image: ${filename}`);
+    }
+    const toggleOutput = (e) =>{
+        console.log(toggleOutputRef);
+        if(output_display === true){
+            outputRef.current.style.display = 'none';
+            setOutput_display(false);
+            setOutput_text('show output');
+
+        }else if(output_display === false){
+            outputRef.current.style.display = 'block';
+            setOutput_display(true);
+            setOutput_text('hide output');
+        }
     }
     const getSelection = (e) =>{
         e.preventDefault();
@@ -134,9 +152,11 @@ const Edit_article = () =>{
                                 <option value="Thoughts">Thoughts</option>
                                 <option value="Career">Career</option>
                                 <option value="Productivity">Productivity</option>
+                                <option value="Gaming">Gaming</option>
+                                <option value="Movies & TV shows">Movies & TV shows</option>
+                                <option value="Coding">Coding</option>
                                 <option value="Self development">Self development</option>
                                 <option value="Personal life">Personal life</option>
-                                <option value="Coding">Coding</option>
                             </select>
                         </div>
                         <button className="submit-article" >Publish</button>
@@ -174,6 +194,7 @@ const Edit_article = () =>{
                             onClick={closeSubtitleInput}
                         />
                     </div>
+                    <div className="toggle-output" ref={toggleOutputRef} onClick={toggleOutput}>{output_text}</div>
                     <div className="Article-content">
                         <CKEditor
                             editor={ Editor }
@@ -195,14 +216,7 @@ const Edit_article = () =>{
                                 console.log( 'Focus.', editor );
                             } }
                         />
-                        <textarea   maxlength="150" 
-                                    placeholder="Tell your story…" 
-                                    className="content-txtarea" 
-                                    name="story_content" 
-                                    style={{height: "74px"}}
-                                    value={parse(editorContent)}
-                                    onChange={e => setStoryContent(e.target.value)}>
-                        </textarea>
+                        <div className="editor-parse-content" ref={outputRef}>{parse(`${editorContent}`)}</div>
                     </div>
                 </div>             
             </form>

@@ -27,12 +27,16 @@ const Update_article = () =>{
     //Editor Content state variables
     const [editorContent, setEditorContent] = useState('');
 
+    const [output_display, setOutput_display] = useState(false);
+    const [output_text, setOutput_text] = useState("show output");
     //Editor design related variables
     // const editorConfiguration = {
     //     toolbar: [ 'bold', 'italic' ]
     // };
     const subtitleRef = useRef(null);
     const addSubtitleRef = useRef(null);
+    const outputRef = useRef(null);
+    const toggleOutputRef = useRef(null);
 
     const navigate = useNavigate();
 
@@ -131,8 +135,25 @@ const Update_article = () =>{
     //     console.log(coverFilename);
     //     $('#cover-upload-btn').text(`Uploaded Image: ${filename}`);
     // }
+    const toggleOutput = (e) =>{
+        console.log(toggleOutputRef);
+        if(output_display === true){
+            outputRef.current.style.display = 'none';
+            setOutput_display(false);
+            setOutput_text('show output');
+            // toggleOutputRef.current.style.backgroundColor = '#ffffff';
+            // toggleOutputRef.current.style.color = '#000000';
+
+        }else if(output_display === false){
+            outputRef.current.style.display = 'block';
+            setOutput_display(true);
+            setOutput_text('hide output');
+            // toggleOutputRef.current.style.backgroundColor = '#000000';
+            // toggleOutputRef.current.style.color = '#ffffff';
+        }
+    }
     const getSelection = (e) =>{
-        e.preventDefault();
+        // e.preventDefault();
         setStory_selection(e.target.value);
     }
     return(
@@ -157,9 +178,11 @@ const Update_article = () =>{
                                 <option value="Thoughts">Thoughts</option>
                                 <option value="Career">Career</option>
                                 <option value="Productivity">Productivity</option>
+                                <option value="Gaming">Gaming</option>
+                                <option value="Movies & TV shows">Movies & TV shows</option>
+                                <option value="Coding">Coding</option>
                                 <option value="Self development">Self development</option>
                                 <option value="Personal life">Personal life</option>
-                                <option value="Coding">Coding</option>
                             </select>
                         </div>
                         <button className="submit-article" >Save changes</button>
@@ -197,6 +220,7 @@ const Update_article = () =>{
                             onClick={closeSubtitleInput}
                         />
                     </div>
+                    <div className="toggle-output" ref={toggleOutputRef} onClick={toggleOutput}>{output_text}</div>
                     <div className="Article-content">
                         <CKEditor
                             editor={ Editor }
@@ -218,14 +242,7 @@ const Update_article = () =>{
                                 console.log( 'Focus.', editor );
                             } }
                         />
-                        <textarea   maxlength="150" 
-                                    placeholder="Tell your story…" 
-                                    className="content-txtarea" 
-                                    name="story_content" 
-                                    style={{height: "74px"}}
-                                    value={parse(editorContent)}
-                                    onChange={e => setStoryContent(e.target.value)}>
-                        </textarea>
+                        <div className="editor-parse-content" ref={outputRef}>{parse(`${editorContent}`)}</div>                      
                     </div>
                 </div>             
             </form>
